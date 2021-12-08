@@ -1,0 +1,82 @@
+{%extends 'components/navbar.html'%}
+{% block title%}Login{% endblock %}
+{% load static %}
+{% block content %}
+<div class="row mt-5 d-flex align-items-center justify-content-center">
+
+    <div class="col-md-7">
+      <img src="{% static 'images/music.svg' %}" width='650px' />
+    </div>
+
+    <div class="col-md-5 signup_form rounded">
+      
+      <form method="POST" action="/upload" enctype="multipart/form-data" class="row g-3 needs-validation" id='signup-form' novalidate>
+      
+        <div class='col-md-12 text-center mb-3 signup_label'>Upload Your Music</div>
+
+        {% csrf_token %}
+
+        <div class="col-md-6">
+          <div class="form-outline  inputdiv rounded">
+            <input name="name" autocomplete="off" type="text" class="form-control form-control-lg" id="validationCustom01" required/>
+            <label for="validationCustom01" class="form-label">Song Name</label>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+      
+        <div class="col-md-6 ">
+          <div class="form-outline  inputdiv rounded">
+            <input name="singer" autocomplete="off" type="text" class="form-control form-control-lg" id="validationCustom02" required />
+            <label for="validationCustom02" class="form-label">Singer name</label>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+      
+        <div class="col-md-12">
+          <div class="input-group form-outline input-group-lg  inputdiv rounded">
+            <span class="input-group-text" id="inputGroupPrepend">@</span>
+            <input name="tag" autocomplete="off" type="text" class="form-control form-control-lg" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required />
+            <label for="validationCustomUsername" class="form-label">Tags</label>
+            <div class="invalid-feedback">Please choose a username.</div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+            <h6>Cover Image</h6>
+        </div>
+        <div class="col-md-12 mt-3">
+            <input class="form-control form-control-lg" name="image" id="formFileLg"  type="file" />
+        </div>
+      
+        <div class="col-md-12">
+          <div class="form-outline inputdiv rounded">
+            <input name="movie" autocomplete="off" type="text" class="form-control form-control-lg" id="validationCustom05" required />
+            <label for="validationCustom05" class="form-label">Movie Name</label>
+            <div class="invalid-feedback">Please provide a password.</div>
+          </div>
+        </div>
+      
+        <div class="col-md-12 ">
+          <div class="form-outline inputdiv rounded">
+            <input name="credit" autocomplete="off" type="text" class="form-control form-control-lg" id="validationCustom05" required />
+            <label for="validationCustom05" class="form-label">Credit</label>
+            <div class="invalid-feedback">Please provide a confirm password.</div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+            <h6>Song File</h6>
+        </div>
+        <div class="col-md-12 mt-3">
+            <input class="form-control form-control-lg" name="file" id="formFileLg"  type="file" />
+        </div>
+      
+        <div class="col-12 mt-5 mb-5 text-center">
+          <button class="btn signup_submit text-dark btn-lg fs-5" type="submit">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+    
+
+{% endblock %}

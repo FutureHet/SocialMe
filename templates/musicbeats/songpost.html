@@ -1,0 +1,181 @@
+{% extends 'components/navbar.html' %}
+
+{% block title%}All Songs{% endblock %}
+
+{% block content %}
+{% comment %}
+{% if message%}
+<script>
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: '{{message}}',
+        showConfirmButton: false,
+        timer: 1500
+    })
+</script>
+{% endif %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" style="padding-top: 3%;">
+            <img src="{{song.image.url}}" alt="" height="250px" width="350px">
+        </div>
+        <div class="col-md-6">
+            <h2 style="padding-top: 6%; font-weight: 550; color: green;">Title: {{song.name}}</h2>
+            <h5 style="padding-top: 2%; font-weight: 550;">Category: {{song.tags}}</h5>
+            <h5 style="padding-top: 2%; font-weight: 550;">Movie: {{song.movie}}</h5>
+            <h5 style="padding-top: 2%; font-weight: 550;">Singer: {{song.singer}}</h5>
+
+
+            <audio controls style="padding-top: 2%;">
+                <source src="/media/{{song.song}}" type="audio/mp3">
+            </audio>
+
+            <div style="padding-top: 2%;">
+
+                <div class="row" style="padding-left: 3%;">
+                    <form action="/watchlater" method="POST">{% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{song.song_id}}">
+                        <button type="submit" class="btn btn-outline-danger" id="submit_btn">Add to Listen
+                            Later</button>
+                    </form>
+                    <a download href="/media/{{song.song}}" style="padding-left: 1%;"><button
+                            class="btn btn-outline-danger">Download Song</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+</script> {% endcomment %}
+<div class="mt-5">
+{% if myuser.username|slugify == song.user|slugify %}
+
+    <form action="{% url 'like_song' song.pk %}" method="post">
+                  
+        {% csrf_token %}
+          <div class="like-content">
+
+            <button class="btn-secondary like-review" type="submit" name="song_id" value="{{song.song_id}}">
+                <i class="fa fa-heart" aria-hidden="true"></i> {{likes}}-Like
+                </button>
+
+          </div>
+    </form>
+    {% else %}
+        <form action="" method="post">
+                  
+        {% csrf_token %}
+          <div class="like-content">
+
+            <button class="btn-secondary like-review" type="submit" name="song_id" value="{{song.song_id}}">
+                <i class="fa fa-heart" aria-hidden="true"></i> {{likes}}-Like
+                </button>
+
+          </div>
+    </form>
+
+{% endif %}
+{% if myuser.username|slugify == song.user|slugify %}
+
+    <a href="{% url 'song_delete' song.song_id%}" class="btn btn_save ">Delete</a>
+{% endif %}    
+
+
+
+    <div class="row justify-content-center">
+        <div class="col-6 text-center">
+            <div class="row  pt-5 pb-5 pe-4 shadow rounded" style="background:#92E3A9">
+                <div class="col-6">
+                
+                    <h1 class="fs-1" style="color:darkgreen">{{song.name}}</h1>
+                    <label class="fs-4">Singer: {{song.singer}}</label><br>
+                    <label class="fs-4">Movie: {{song.movie}}</label><br>
+                    <label class="fs-4">Tags: {{song.tags}}</label><br>
+                </div>
+                <div class="col-6  d-flex align-item-center justify-content-center text-center">
+                    <img src="{{song.image.url}}" class="rounded" width="300px" />
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div id="app-cover">
+            <div id="player">
+                <div id="player-track">
+                    <div id="album-name"></div>
+                    <div id="track-name"></div>
+                    <div id="track-time">
+                        <div id="current-time"></div>
+                        <div id="track-length"></div>
+                    </div>
+                    <div id="s-area">
+                        <div id="ins-time"></div>
+                        <div id="s-hover"></div>
+                        <div id="seek-bar"></div>
+                    </div>
+                </div>
+                <div id="player-content">
+                    <div id="album-art">
+                        {% for i in mysong %}
+                        <img src="{{i.image.url}}" id="_{{forloop.counter}}">
+                        {% endfor %}
+
+                        <div id="buffer-box">Buffering ...</div>
+                    </div>
+                    <div id="player-controls">
+                        <div class="control">
+                            <div class="button" id="play-previous">
+                                <i class="fas fa-backward"></i>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <div class="button" id="play-pause-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <div class="button" id="play-next">
+                                <i class="fas fa-forward"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center ">
+            {% if user.is_authenticated %}
+            
+                <div class="col-2 ms-5 temp" >
+                    <form action="/watchlater" method="POST">{% csrf_token %}
+                    <input type="hidden" name="video_id" value="{{song.song_id}}">
+                    <button type="submit" class="btn btn_save" id="submit_btn">Add to Listen
+                        Later</button>
+                    </form>
+                </div>
+            
+                <div class="col-2 temp" >
+                    {% if myuser.plan == "paid" %}
+                    <a download href="/media/{{song.song}}" style="padding-left: 1%;"><button class="btn btn_save">Download
+                            Song</button></a>
+                    {% endif %}
+                </div>
+
+            
+            
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+
+{% endblock %}

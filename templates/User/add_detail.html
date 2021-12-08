@@ -1,0 +1,91 @@
+{% extends 'components/navbar.html' %}
+{% block content %}
+<form method="POST" action="{% url 'home' %}" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class= "container add_detail_container d-flex align-items-center justify-content-center">
+        <div class= 'row w-50'>
+            
+            <div class="col-md-12 mt-3 text-center">
+                <h1> Add Details Here </h1>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <div class="form-outline">
+                    <input type="date" name='bday' class="form-control form-control-lg" required/>
+                    <label for="" class="form-label">Birth Date</label>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3">
+                <select name="state" class="form-select form-select-lg" id="state_id" onChange="update()" aria-label=".form-select-lg example">
+                    <option selected disabled >Select your state</option>
+                </select>
+            </div>
+            <div class="col-md-12 mt-3">
+                <div class="input-group input-group-lg ">
+                            <select name="city" class="form-select form-select-lg" id="city_id"aria-label=".form-select-lg example">
+                                <option selected disabled>Select Your City</option>
+                            </select>
+                        </div>
+            </div>
+            <div class="col-md-12 mt-3">
+                <div class="form-outline">
+                    <input type="text" name='number' class="form-control form-control-lg" required/>
+                    <label for="" class="form-label">Number</label>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <input class="form-control form-control-lg" name="profile_image" id="formFileLg"  type="file" />
+            </div>
+
+            <div class="section pt-3">
+                <div>
+                    <input type="radio" id="free" name="plan" value="free" checked>
+                    <label class="label" for="free">
+                        <h2>Free</h2>
+                        <p class="p">Awww, poor baby. Too afraid of the scary game sprites? I laugh at you.</p>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="paid" name="plan" value="paid">
+                    <label class="label" for="paid">
+                        <h2>Premium</h2>
+                        <p class="p">You're not a gaming God by any stretch of the imagination.</p>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-12 mt-3 text-center">
+                <button class="btn btn-success text-white text-weight-bold btn-lg" type="submit">Submit form</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+{% endblock content %}
+{% block script %}
+    <script>
+        var state_dict = {
+            "Gujrat":["Ahmedabad","Bhavnagar", "Rajkot", "Surat"],
+            "Rajastan":["Udaipur", "Jaipur", "Bikaner"],
+            "Maharashtra":["Mumbai", "Nagpur", "Pune"],
+            "Uttar Pradesh":["Delhi", "Noida"]
+        };
+        for(var i in state_dict){
+            document.getElementById('state_id').innerHTML+="<option value='"+i+"'"+">"+i+"</option>"
+        }
+        function update(){
+            var state_id = document.getElementById('state_id');
+            var option = state_id.options[state_id.selectedIndex];
+            var state = option.value
+            document.getElementById('city_id').innerHTML=""
+
+            for(var i in state_dict[state]){
+            
+            document.getElementById('city_id').innerHTML+="<option value='"+state_dict[state][i]+"'"+">"+state_dict[state][i]+"</option>"
+        }
+        }
+    </script>
+{% endblock script %}

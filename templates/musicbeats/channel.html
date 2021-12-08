@@ -1,0 +1,39 @@
+{% extends 'components/navbar.html' %}
+{% block content %}
+<h2 style="text-align: center; padding-top: 2%; color: rgb(218, 16, 16);">Channel: {{channel.name}}</h2>
+
+<div class="container">
+  {% for i in song reversed %}
+  <div class="col-12 mt-5">
+    <div class="blog-slider">
+      <div class="blog-slider__wrp swiper-wrapper">
+        <div class="blog-slider__item swiper-slide">
+          <div class="blog-slider__img">
+
+            <img src="{{i.image.url}}" alt="">
+          </div>
+          <div class="blog-slider__content">
+            <span class="blog-slider__code">Uploaded At: {{i.upload_date}}</span>
+            <div class="blog-slider__title">{{i.name}}</div>
+            <div class="blog-slider__text">Singer: {{i.singer}}<br>Movie: {{i.movie}}<br>Tags: {{i.tags}}</div>
+            {% if user.is_authenticated %}
+            <form action="/history" method="POST">{% csrf_token %}
+              <input type="hidden" name="music_id" value="{{i.song_id}}">
+              <a href="/songs/{{i.song_id}}"><button class="blog-slider__button">Listen Song</button></a>
+            </form>
+            {% else %}
+            <a href="/songs/{{i.song_id}}" class="blog-slider__buttonr"><button>Listen Song</button></a>
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,69 @@
+{% extends 'components/navbar.html' %}
+
+{% block title %}
+	Sign Up
+{% endblock %}
+
+{% block content %}
+	
+	
+{% load static %}
+<div class="container signup_container mt-4 d-flex align-items-center justify-content-center">
+
+  <div class="row d-flex align-items-center justify-content-center">
+
+    <div class="col-md-12">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>Message:</strong> {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    {% endfor %}
+    </div>
+
+    {% if not user.is_authenticated %}
+      <div class="col-md-7">
+      <img src="{% static 'images/login.svg' %}" width='650px' />
+    </div>
+
+	  <div class="col-md-5 signup_form rounded">
+    
+		  <form method="POST" action="/signin" class="row g-3 needs-validation" id='signup-form' novalidate>
+        <div class='col-md-12 text-center mb-3 signup_label'>Login Here</div>
+
+        {% csrf_token %}
+
+        <div class="col-md-12">
+          <div class="input-group form-outline input-group-lg  inputdiv rounded">
+            <span class="input-group-text" id="inputGroupPrepend">@</span>
+            <input name="username" autocomplete="off" type="text" class="form-control form-control-lg" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required />
+            <label for="validationCustomUsername" class="form-label">Username</label>
+            <div class="invalid-feedback">Please choose a username.</div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-outline inputdiv rounded">
+            <input name="passwordlogin" autocomplete="off" type="password" class="form-control form-control-lg" id="validationCustom05" required />
+            <label for="validationCustom05" class="form-label">Password</label>
+            <div class="invalid-feedback">Please provide a password.</div>
+          </div>
+        </div>
+  
+        <div class="col-12 mt-5 mb-5 text-center">
+          <button class="btn signup_submit text-dark btn-lg fs-5" type="submit">Login</button>
+        </div>
+      </form>
+	  </div>
+    {% else %}
+      <label class='login_text'>You are already Loged In</label>
+    {% endif %}
+    
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+
+{% endblock script %}

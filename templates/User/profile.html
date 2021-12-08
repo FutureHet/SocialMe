@@ -1,0 +1,195 @@
+{% extends 'components/navbar.html' %}
+{% block content %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-4 text-center">
+            <div class="d-flex align-items-center justify-centent-center">
+                <div class="mx-auto "><img class="profile_photo shadow"  id="profile" src="{{ myuser.profile_image.url }}" width="100%"></div>
+            </div>
+            <div class="mt-5">
+                <h4>@{{ myuser.username }}</h4>
+            </div>
+            <div class="mt-5">
+                <form method="POST" action="{% url 'profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="btn btn_save text-black btn-lg" onclick="document.getElementById('getFile').click()">Change<br/>Profile Image</span>
+                <input type='file' name="profile_image" accept='image/*' onchange="renderImage(this);" value="{{ myuser.profile_image.url }}" id="getFile" style="display:none">
+            </div>
+            <div class="mt-5 section">
+            
+                <div>
+                    {% if myuser.plan == "free" %}
+                        <input type="radio" id="free" name="plan" value="free" checked>
+                        <label class="label" for="free">
+                        <h2>Free</h2>
+                        <p class="p">You have selected our free plan.</p>
+                        </label>
+                    {% else %}
+                        <input type="radio" id="free" name="plan" value="free">
+                        <label class="label" for="free">
+                        <h2>Free</h2>
+                        <p class="p">Awww, don't worry you can still listen our songs.</p>
+                        </label>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if myuser.plan == "paid" %}
+                        <input type="radio" id="paid" name="plan" value="paid" checked>
+                        <label class="label" for="paid">
+                        <h2>Premium</h2>
+                        <p class="p">Wow, You have selected our premium plan.</p>
+                        </label>
+                    {% else %}
+                        <input type="radio" id="paid" name="plan" value="paid">
+                        <label class="label" for="paid">
+                        <h2>Premium</h2>
+                        <p class="p">Hurry, In this you can enjoy song offline.</p>
+                        </label>
+                    {% endif %}
+                    
+                </div>
+            </div>
+
+        </div>
+        <div class="col-8">
+            <div class="row">
+                <div class="col">
+                    <h3>My Profile</h3>
+                </div>
+            </div>
+            {% comment %} <form method="POST" action="{% url 'profile' %}">
+                {% csrf_token %} {% endcomment %}
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">First Name</span>
+                            <input type="text" value="{{ myuser.first_name | capfirst }}" name="first_name" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Last Name</span>
+                            <input type="text" value="{{ myuser.last_name | capfirst }}" name="last_name" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Username</span>
+                            <input type="text"disabled value="{{ myuser.username }}"  name="username" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Email</span>
+                            <input type="text" disabled value="{{ myuser.email }}"  name="email" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Birth Date</span>
+                            <input type="date" value="{{ myuser.birth_date|date:"Y-m-d" }}" name="birth_date" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Mobile</span>
+                            <input type="text" value="{{ myuser.number }}" name="number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <select name="state" class="form-select form-select-lg mb-3" id="state_id" onChange="update()" aria-label=".form-select-lg example">
+                            <option selected disabled value="{{ myuser.state }}">{{ myuser.state }}</option>
+                            
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group input-group-lg mb-4">
+                            <select name="city" class="form-select form-select-lg mb-3" id="city_id"aria-label=".form-select-lg example">
+                                <option selected disabled value="{{ myuser.city }}">{{ myuser.city }}</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{ myuser.id }}" name="id">
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button class="btn btn_save text-black btn-lg" type="submit">Save</button>
+                    </div>
+                </div>
+                
+            </form>
+            <form method="POST" action="{% url 'profile' %}">
+            {% csrf_token %}
+                <div class="row">
+                    <div class='mt-5 mb-3 h3'>Reset Password</div> 
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Current Password</span>
+                            <input type="password" name="current_password" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">New Password</span>
+                            <input type="password" name="new_password" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text" id="basic-addon1">Confirm Password</span>
+                            <input type="password" name="confirm_password" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button class="btn btn_save btn-lg text-black" type="submit">Reset Password</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    var state_dict = {
+            "Gujrat":["Ahmedabad","Bhavnagar", "Rajkot", "Surat"],
+            "Rajastan":["Udaipur", "Jaipur", "Bikaner"],
+            "Maharashtra":["Mumbai", "Nagpur", "Pune"],
+            "Uttar Pradesh":["Delhi", "Noida"]
+    };
+    for(var i in state_dict){
+        document.getElementById('state_id').innerHTML+="<option value='"+i+"'"+">"+i+"</option>"
+    }
+    function update(){
+        var state_id = document.getElementById('state_id');
+		var option = state_id.options[state_id.selectedIndex];
+        var state = option.value
+        document.getElementById('city_id').innerHTML=""
+
+        for(var i in state_dict[state]){
+        
+        document.getElementById('city_id').innerHTML+="<option value='"+state_dict[state][i]+"'"+">"+state_dict[state][i]+"</option>"
+    }
+    }
+    function renderImage(input) { 
+            $('#profile')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]); 
+    }
+</script>
+{% endblock script %}

@@ -1,0 +1,60 @@
+.navbar .logo{
+    font-size: 25px;
+}
+.navbar {
+    
+    font-size: 20px;
+}
+.navright button{
+    font-size: 15px;
+}
+.index_section{
+    height:90vh;
+    
+}
+
+.welcome_text{
+    font-size: 100px;
+    font-weight: bold;
+    
+}
+.welcome label{
+    color: #92E3A9;
+}
+.signup_container{
+    height: 90vh;
+}
+.signup_form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.signup_label{
+    font-size: 50px;
+    font-weight: bold;
+}
+.signup_submit{
+    background-color: #92E3A9;
+}
+.inputdiv{
+    background-color: white;
+}
+.login_text{
+    font-size: 80px;
+    font-weight: bold;
+
+}
+.add_detail_container{
+    height: 90vh;
+}
+.profile_photo{
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+}
+.btn_save{
+    background-color: #92E3A9;
+}
+.trending{
+    flex-direction: row;
+}

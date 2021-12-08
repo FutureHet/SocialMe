@@ -1,0 +1,100 @@
+{% extends 'components/navbar.html' %}
+{% load static %}
+{% block content %}
+<section class='index_section'>
+
+  <div class='row align-items-center justify-content-center d-flex'>
+
+    <div class="col-12">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} h5 alert-dismissible fade show" role="alert">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="col-12">
+      {% if user.is_authenticated %}
+
+      {% if myuser.is_updated is False %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Welcome</strong> Please fill some detail to complete your profile.<a href="{% url 'add_detail' %}"
+          class="text-dark"><button class="btn btn-warning ms-5">Fill up details</button></a>
+        <button type="button"  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+      {% endif %}
+      {% endif %}
+      
+    </div>
+
+    <div class="mt-5 col-8 align-items-center justify-content-center d-flex">
+      <img src="{% static 'images/welcome-animate.svg' %}" width="800px"/>
+    </div>
+
+    <div class="mt-5 col-4 align-items-center justify-content-center d-flex text-center" style="font-size:50px">
+      <h1>Welcome {% if user.is_authenticated %} <br> {{myuser.username | capfirst}} {% else %} User {% endif %}</h1>
+    </div>
+
+    <h1 class="mt-5 mb-5">Trending Songs</h1>
+
+    <div class="row ps-5" >
+      {% for i in song %}
+      <div class="mb-5">
+      <div class="blog-slider">
+        <div class="blog-slider__wrp swiper-wrapper">
+          <div class="blog-slider__item swiper-slide">
+            <div class="blog-slider__img">
+
+              <img src="{{i.image.url}}" alt="">
+            </div>
+            <div class="blog-slider__content">
+              <span class="blog-slider__code">Uploaded At: {{i.upload_date}}</span>
+              <div class="blog-slider__title">{{i.name}}</div>
+              <div class="blog-slider__text">Singer: {{i.singer}}<br>Movie: {{i.movie}}<br>Tags: {{i.tags}}</div>
+              <a href="/songs/{{i.song_id}}" class="blog-slider__button">Listen Song</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+
+    <h1 class="mt-5 mb-5">Your Listen Later</h1>
+
+    <div class="row ps-5">
+      {% for i in watch reversed %}
+      <div class="col-12 mb-5">
+        <div class="blog-slider">
+          <div class="blog-slider__wrp swiper-wrapper">
+            <div class="blog-slider__item swiper-slide">
+              <div class="blog-slider__img">
+
+                <img src="{{i.image.url}}" alt="">
+              </div>
+              <div class="blog-slider__content">
+                <span class="blog-slider__code">Uploaded At: {{i.upload_date}}</span>
+                <div class="blog-slider__title">{{i.name}}</div>
+                <div class="blog-slider__text">Singer: {{i.singer}}<br>Movie: {{i.movie}}<br>Tags: {{i.tags}}</div>
+                <a href="/songs/{{i.song_id}}" class="blog-slider__button">Listen Song</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% endif %}
+
+    
+  </div>
+</section>
+
+{% endblock content %}
